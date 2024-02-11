@@ -1,8 +1,24 @@
-import PropTypes from "react";
+import PropTypes, { useEffect, useState } from "react";
 import { Stack, Text, Box } from "@chakra-ui/react";
 import PlayAudio from "./PlayAudio";
+import { fetchData } from "../api";
 
 const Content = ({ searchTerm }) => {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      if (searchTerm) {
+        const result = await fetchData(searchTerm);
+        setData(result);
+      }
+    };
+
+    getData();
+  }, [searchTerm]);
+
+  console.log(data);
+
   return (
     <Stack
       pt={10}
