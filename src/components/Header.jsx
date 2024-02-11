@@ -1,11 +1,13 @@
-import { Text, Stack } from "@chakra-ui/react";
+import { HStack, Icon } from "@chakra-ui/react";
+import { EditIcon } from "@chakra-ui/icons";
+import Toggle from "../components/Toggle";
 
 const Header = () => {
   return (
-    <Stack>
-      <Text>Header component</Text>
-      Header component
-    </Stack>
+    <HStack minH={"50px"} pt={10} pb={10} justifyContent={"space-between"}>
+      <Icon as={EditIcon} w={8} h={8} />
+      <Toggle />
+    </HStack>
   );
 };
 
