@@ -18,6 +18,18 @@
   --red: hsl(0, 100%, 66%);
 }
 
+body {
+  font-family: "Inter", monospace;
+}
+
+body.font-inconsolata {
+  font-family: "Inconsolata", sans-serif;
+}
+
+body.font-lora {
+  font-family: "Lora", serif;
+}
+
 @media only screen and (max-width: 768px) {
 }
 @media only screen and (max-width: 375px) {
