@@ -6,16 +6,16 @@
 
 :root {
   /* Neutral */
-  --light-gray: hsla(220, 38%, 97%, 1);
-  --light-bluish: hsla(216, 47%, 78%, 1);
-  --gray-navy: hsla(219, 13%, 44%, 1);
-  --navy: hsla(216, 27%, 32%, 1);
-  --dark-navy: hsla(216, 25%, 25%, 1);
-  --purple: hsla(277, 91%, 56%);
-  --pure-white: hsla(0, 0%, 100%, 1);
-  --red: hsla(0, 82%, 63%, 1);
-  --yellow: hsla(49, 100%, 58%, 1);
-  --green: hsla(163, 100%, 41%, 1);
+  --dark: hsla(0, 0%, 1.96%, 1);
+  --dark-one: hsl(0, 0%, 12%);
+  --dark-two: hsl(0, 0%, 18%);
+  --dark-three: hsl(0, 0%, 23%);
+  --gray: hsl(0, 0%, 46%);
+  --gray-light: hsl(0, 0%, 91%);
+  --white-dark: hsl(0, 0%, 96%);
+  --white: hsl(0, 0%, 100%);
+  --purple: hsl(274, 82%, 60%);
+  --red: hsl(0, 100%, 66%);
 }
 
 @media only screen and (max-width: 768px) {
