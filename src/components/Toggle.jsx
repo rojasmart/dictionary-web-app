@@ -17,7 +17,7 @@ const Toggle = () => {
       <Switch
         isChecked={isChecked}
         onChange={handleToggle}
-        colorScheme="purplei"
+        colorScheme="purple"
       />
       {colorMode === "dark" ? (
         <SunIcon color="orange.200" />
