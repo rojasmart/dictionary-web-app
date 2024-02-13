@@ -75,6 +75,22 @@ const Content = ({ searchTerm }) => {
                 </Text>
               </HStack>
             </Flex>
+            <Flex gap={6} mt={6}>
+              <Text fontSize="xl" fontStyle="italic" fontWeight="bold">
+                {data[0].meanings[1].partOfSpeech}
+              </Text>
+              <Divider orientation="horizontal" alignSelf={"center"} />
+            </Flex>
+            <Flex mt={6} flexDirection={"column"}>
+              <Text sx={{ color: "var(--gray)" }}>Meaning</Text>
+              <UnorderedList>
+                {data[0].meanings[1].definitions.map((definition, index) => (
+                  <ListItem key={index} mt={4}>
+                    {definition.definition}
+                  </ListItem>
+                ))}
+              </UnorderedList>
+            </Flex>
           </Stack>
         </>
       )}
