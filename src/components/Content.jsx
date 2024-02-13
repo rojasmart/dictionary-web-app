@@ -1,10 +1,11 @@
 import PropTypes, { useEffect, useState } from "react";
-import { Stack, Text, Box } from "@chakra-ui/react";
+import { Stack, Text, Box, Flex } from "@chakra-ui/react";
 import PlayAudio from "./PlayAudio";
 import { fetchData } from "../api";
 
 const Content = ({ searchTerm }) => {
   const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -12,13 +13,18 @@ const Content = ({ searchTerm }) => {
         try {
           const result = await fetchData(searchTerm);
           setData(result);
+          setError(null);
         } catch (error) {
           console.error(error);
+          setError(error);
         }
       }
     };
     getData();
   }, [searchTerm]);
+
+  console.log("data", data);
+  console.log("error", error);
 
   return (
     <Stack
@@ -27,9 +33,9 @@ const Content = ({ searchTerm }) => {
       flexDirection={"row"}
       justifyContent={"space-between"}
     >
-      <Box>
-        {searchTerm && data && (
-          <Stack>
+      {searchTerm && data && !error && (
+        <Flex justifyContent={"space-between"} flex={"auto"}>
+          <Box>
             <Text fontSize="5xl" as={"b"}>
               {searchTerm}
             </Text>
@@ -38,15 +44,18 @@ const Content = ({ searchTerm }) => {
                 {data[0].phonetic}
               </Text>
             </Stack>
-          </Stack>
-        )}
-        {searchTerm && !data && (
-          <Text fontSize="2xl" as={"b"} color={"red"}>
-            No results found for {searchTerm}
+          </Box>
+          <PlayAudio />
+        </Flex>
+      )}
+      {searchTerm && error && (
+        <Stack>
+          <Text fontSize="5xl" as={"b"}>
+            {error.response.data.title}
           </Text>
-        )}
-      </Box>
-      <PlayAudio />
+          <Text>{error.response.data.message}</Text>
+        </Stack>
+      )}
     </Stack>
   );
 };
