@@ -9,14 +9,16 @@ const Content = ({ searchTerm }) => {
   useEffect(() => {
     const getData = async () => {
       if (searchTerm) {
-        const result = await fetchData(searchTerm);
-        setData(result);
+        try {
+          const result = await fetchData(searchTerm);
+          setData(result);
+        } catch (error) {
+          console.error(error);
+        }
       }
     };
     getData();
   }, [searchTerm]);
-
-  console.log(data);
 
   return (
     <Stack
@@ -26,12 +28,21 @@ const Content = ({ searchTerm }) => {
       justifyContent={"space-between"}
     >
       <Box>
-        <Text fontSize="5xl" as={"b"}>
-          {searchTerm}
-        </Text>
-        {searchTerm && (
-          <Text fontSize="lg" color={"purple"}>
-            Search for something
+        {searchTerm && data && (
+          <Stack>
+            <Text fontSize="5xl" as={"b"}>
+              {searchTerm}
+            </Text>
+            <Stack>
+              <Text fontSize="lg" color={"purple"}>
+                {data[0].phonetic}
+              </Text>
+            </Stack>
+          </Stack>
+        )}
+        {searchTerm && !data && (
+          <Text fontSize="2xl" as={"b"} color={"red"}>
+            No results found for {searchTerm}
           </Text>
         )}
       </Box>
