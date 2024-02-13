@@ -1,5 +1,14 @@
 import PropTypes, { useEffect, useState } from "react";
-import { Stack, Text, Box, Flex } from "@chakra-ui/react";
+import {
+  Stack,
+  Text,
+  Box,
+  Flex,
+  Divider,
+  UnorderedList,
+  ListItem,
+  HStack,
+} from "@chakra-ui/react";
 import PlayAudio from "./PlayAudio";
 import { fetchData } from "../api";
 
@@ -27,26 +36,47 @@ const Content = ({ searchTerm }) => {
   console.log("error", error);
 
   return (
-    <Stack
-      pt={10}
-      pb={10}
-      flexDirection={"row"}
-      justifyContent={"space-between"}
-    >
+    <Stack pt={10} pb={10} flexDirection={"column"}>
       {searchTerm && data && !error && (
-        <Flex justifyContent={"space-between"} flex={"auto"}>
-          <Box>
-            <Text fontSize="5xl" as={"b"}>
-              {searchTerm}
-            </Text>
-            <Stack>
-              <Text fontSize="lg" color={"purple"}>
-                {data[0].phonetic}
+        <>
+          <Flex justifyContent={"space-between"} flex={"auto"}>
+            <Box>
+              <Text fontSize="5xl" as={"b"}>
+                {searchTerm}
               </Text>
-            </Stack>
-          </Box>
-          <PlayAudio />
-        </Flex>
+              <Stack>
+                <Text fontSize="lg" color={"purple"}>
+                  {data[0].phonetic}
+                </Text>
+              </Stack>
+            </Box>
+            <PlayAudio />
+          </Flex>
+          <Stack mt={6}>
+            <Flex gap={6}>
+              <Text fontSize="xl" fontStyle="italic" fontWeight="bold">
+                {data[0].meanings[0].partOfSpeech}
+              </Text>
+              <Divider orientation="horizontal" alignSelf={"center"} />
+            </Flex>
+            <Flex mt={6} flexDirection={"column"}>
+              <Text sx={{ color: "var(--gray)" }}>Meaning</Text>
+              <UnorderedList>
+                {data[0].meanings[0].definitions.map((definition, index) => (
+                  <ListItem key={index} mt={4}>
+                    {definition.definition}
+                  </ListItem>
+                ))}
+              </UnorderedList>
+              <HStack mt={6}>
+                <Text sx={{ color: "var(--gray)" }}>Synonyms</Text>
+                <Text as={"b"} color={"purple"}>
+                  {data[0].meanings[0].synonyms}
+                </Text>
+              </HStack>
+            </Flex>
+          </Stack>
+        </>
       )}
       {searchTerm && error && (
         <Stack>
