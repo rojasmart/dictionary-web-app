@@ -13,7 +13,6 @@ const Content = ({ searchTerm }) => {
         setData(result);
       }
     };
-
     getData();
   }, [searchTerm]);
 

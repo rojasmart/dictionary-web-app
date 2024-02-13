@@ -1,4 +1,4 @@
-import PropTypes from "react";
+import PropTypes from "prop-types";
 import { Stack } from "@chakra-ui/react";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons";
@@ -33,5 +33,5 @@ const SearchInput = ({ onSearch }) => {
 export default SearchInput;
 
 SearchInput.propTypes = {
-  onSearch: PropTypes.string,
+  onSearch: PropTypes.func.isRequired,
 };

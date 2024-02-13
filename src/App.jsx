@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 import Header from "./components/Header";
 import SearchInput from "./components/SearchInput";
@@ -24,3 +25,8 @@ function App() {
 }
 
 export default App;
+
+App.propTypes = {
+  searchTerm: PropTypes.string,
+  handleSearch: PropTypes.func,
+};
