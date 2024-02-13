@@ -8,8 +8,11 @@ import {
   UnorderedList,
   ListItem,
   HStack,
+  Icon,
+  List,
 } from "@chakra-ui/react";
 import PlayAudio from "./PlayAudio";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { fetchData } from "../api";
 
 const Content = ({ searchTerm }) => {
@@ -87,9 +90,19 @@ const Content = ({ searchTerm }) => {
                 {data[0].meanings[1].definitions.map((definition, index) => (
                   <ListItem key={index} mt={4}>
                     {definition.definition}
+                    <Text
+                      mt={4}
+                      sx={{ color: "var(--gray)" }}
+                    >{`"${definition.example}"`}</Text>
                   </ListItem>
                 ))}
               </UnorderedList>
+            </Flex>
+            <Divider mt={6} orientation="horizontal" alignSelf={"center"} />
+            <Flex mt={2} gap={2}>
+              <Text>Source</Text>
+              <Text>https://en.wiktionary.org/wiki/keyboard</Text>
+              <Icon as={ExternalLinkIcon} />
             </Flex>
           </Stack>
         </>
