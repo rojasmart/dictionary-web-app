@@ -108,11 +108,14 @@ const Content = ({ searchTerm }) => {
         </>
       )}
       {searchTerm && error && (
-        <Stack>
-          <Text fontSize="5xl" as={"b"}>
+        <Stack mt={4} textAlign={"center"}>
+          <Text sx={{ fontSize: "50px" }}>&#128532;</Text>
+          <Text fontSize="2xl" as={"b"}>
             {error.response.data.title}
           </Text>
-          <Text>{error.response.data.message}</Text>
+          <Text>
+            {error.response.data.message} {error.response.data.resolution}
+          </Text>
         </Stack>
       )}
     </Stack>
