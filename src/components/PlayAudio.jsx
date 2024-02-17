@@ -1,9 +1,7 @@
 import PropTypes from "react";
 import { Image } from "@chakra-ui/react";
 
-const Header = ({ data }) => {
-  console.log(console.log(data[0].phonetics[1].audio));
-
+const PlayAudio = ({ data }) => {
   const playSound = () => {
     const audio = new Audio(data[0].phonetics[1].audio);
     audio.play();
@@ -20,8 +18,8 @@ const Header = ({ data }) => {
   );
 };
 
-export default Header;
+export default PlayAudio;
 
-Header.propTypes = {
+PlayAudio.propTypes = {
   data: PropTypes.string,
 };

@@ -30,9 +30,10 @@ const SearchInput = ({ onSearch }) => {
           p={7}
           placeholder="Search..."
           borderRadius={10}
-          borderColor={border ? "red" : "defaulColor"}
+          borderColor={border ? "red" : "#EDF2F7"}
           variant={"filled"}
           _focusVisible={{ background: "#EDF2F7" }}
+          _focusWithin={{ borderColor: "black" }}
           onKeyDown={handleKeyDown}
         />
       </InputGroup>
