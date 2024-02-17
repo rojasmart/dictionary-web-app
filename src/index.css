@@ -30,6 +30,14 @@ body.font-lora {
   font-family: "Lora", serif;
 }
 
+.audio-icon {
+  transition: transform 0.2s;
+}
+
+.audio-icon:hover {
+  transform: scale(1.05);
+}
+
 @media only screen and (max-width: 768px) {
 }
 @media only screen and (max-width: 375px) {

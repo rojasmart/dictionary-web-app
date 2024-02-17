@@ -49,7 +49,7 @@ const Content = ({ searchTerm }) => {
                 </Text>
               </Stack>
             </Box>
-            <PlayAudio />
+            <PlayAudio data={data} />
           </Flex>
           <Stack mt={6}>
             <Flex gap={6}>
