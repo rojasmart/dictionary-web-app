@@ -76,10 +76,16 @@ const Content = ({ searchTerm }) => {
                   ))}
                 </UnorderedList>
                 <HStack mt={6}>
-                  <Text sx={{ color: "var(--gray)" }}>Synonyms</Text>
-                  <Text as={"b"} color={"purple"}>
-                    {data[0].meanings[0].synonyms}
+                  <Text sx={{ color: "var(--gray)" }} mr={6}>
+                    Synonyms
                   </Text>
+                  <HStack gap={4}>
+                    {data[0].meanings[0].synonyms.map((synonym, index) => (
+                      <Text key={index} as={"b"} color={"purple"}>
+                        {synonym}
+                      </Text>
+                    ))}
+                  </HStack>
                 </HStack>
               </Flex>
               <Flex gap={6} mt={6}>
