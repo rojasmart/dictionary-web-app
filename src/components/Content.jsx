@@ -9,7 +9,6 @@ import {
   ListItem,
   HStack,
   Icon,
-  List,
 } from "@chakra-ui/react";
 import PlayAudio from "./PlayAudio";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
@@ -34,9 +33,6 @@ const Content = ({ searchTerm }) => {
     };
     getData();
   }, [searchTerm]);
-
-  console.log("data", data);
-  console.log("error", error);
 
   return (
     <Stack pt={10} pb={10} flexDirection={"column"}>
@@ -116,6 +112,11 @@ const Content = ({ searchTerm }) => {
           <Text>
             {error.response.data.message} {error.response.data.resolution}
           </Text>
+        </Stack>
+      )}
+      {searchTerm === false && (
+        <Stack mt={4} textAlign={"center"}>
+          <Text color={"red"}>Whoops, can’t be empty…</Text>
         </Stack>
       )}
     </Stack>

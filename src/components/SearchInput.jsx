@@ -1,12 +1,21 @@
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { Stack } from "@chakra-ui/react";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons";
 
 const SearchInput = ({ onSearch }) => {
+  const [border, setBorder] = useState(false);
+
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      onSearch(event.target.value);
+      if (event.target.value !== "") {
+        onSearch(event.target.value);
+        setBorder(false);
+      } else {
+        onSearch(false);
+        setBorder(true);
+      }
     }
   };
 
@@ -21,6 +30,7 @@ const SearchInput = ({ onSearch }) => {
           p={7}
           placeholder="Search..."
           borderRadius={10}
+          borderColor={border ? "red" : "defaulColor"}
           variant={"filled"}
           _focusVisible={{ background: "#EDF2F7" }}
           onKeyDown={handleKeyDown}
