@@ -35,97 +35,101 @@ const Content = ({ searchTerm }) => {
   }, [searchTerm]);
 
   return (
-    <Stack pt={10} pb={10} flexDirection={"column"}>
-      {searchTerm && data && !error && (
-        <>
-          <Flex justifyContent={"space-between"} flex={"auto"}>
-            <Box>
-              <Text fontSize="5xl" as={"b"}>
-                {searchTerm}
-              </Text>
-              <Stack>
-                <Text fontSize="lg" color={"purple"}>
-                  {data[0].phonetic}
+    <>
+      {data && data.length > 1 && (
+        <Stack textAlign={"left"}>
+          <Text color={"red"} as={"i"}>
+            There is more than one meaning for this word
+          </Text>
+        </Stack>
+      )}
+      <Stack pt={10} pb={10} flexDirection={"column"}>
+        {searchTerm && data && !error && (
+          <>
+            <Flex justifyContent={"space-between"} flex={"auto"}>
+              <Box>
+                <Text fontSize="5xl" as={"b"}>
+                  {searchTerm}
                 </Text>
-              </Stack>
-            </Box>
-            <PlayAudio data={data} />
-          </Flex>
-          <Stack mt={6}>
-            <Flex gap={6}>
-              <Text fontSize="xl" fontStyle="italic" fontWeight="bold">
-                {data[0].meanings[0].partOfSpeech}
-              </Text>
-              <Divider orientation="horizontal" alignSelf={"center"} />
+                <Stack>
+                  <Text fontSize="lg" color={"purple"}>
+                    {data[0].phonetic}
+                  </Text>
+                </Stack>
+              </Box>
+              <PlayAudio data={data} />
             </Flex>
-            <Flex mt={6} flexDirection={"column"}>
-              <Text sx={{ color: "var(--gray)" }}>Meaning</Text>
-              <UnorderedList>
-                {data[0].meanings[0].definitions.map((definition, index) => (
-                  <ListItem key={index} mt={4}>
-                    {definition.definition}
-                  </ListItem>
-                ))}
-              </UnorderedList>
-              <HStack mt={6}>
-                <Text sx={{ color: "var(--gray)" }} mr={6}>
-                  Synonyms
+            <Stack mt={6}>
+              <Flex gap={6}>
+                <Text fontSize="xl" fontStyle="italic" fontWeight="bold">
+                  {data[0].meanings[0].partOfSpeech}
                 </Text>
-                <HStack gap={4}>
-                  {data[0].meanings[0].synonyms.map((synonym, index) => (
-                    <Text key={index} as={"b"} color={"purple"}>
-                      {synonym}
-                    </Text>
+                <Divider orientation="horizontal" alignSelf={"center"} />
+              </Flex>
+              <Flex mt={6} flexDirection={"column"}>
+                <Text sx={{ color: "var(--gray)" }}>Meaning</Text>
+                <UnorderedList>
+                  {data[0].meanings[0].definitions.map((definition, index) => (
+                    <ListItem key={index} mt={4}>
+                      {definition.definition}
+                    </ListItem>
                   ))}
+                </UnorderedList>
+                <HStack mt={6}>
+                  <Text sx={{ color: "var(--gray)" }}>Synonyms</Text>
+                  <Text as={"b"} color={"purple"}>
+                    {data[0].meanings[0].synonyms}
+                  </Text>
                 </HStack>
-              </HStack>
-            </Flex>
-            <Flex gap={6} mt={6}>
-              <Text fontSize="xl" fontStyle="italic" fontWeight="bold">
-                {data[0].meanings[1].partOfSpeech}
-              </Text>
-              <Divider orientation="horizontal" alignSelf={"center"} />
-            </Flex>
-            <Flex mt={6} flexDirection={"column"}>
-              <Text sx={{ color: "var(--gray)" }}>Meaning</Text>
-              <UnorderedList>
-                {data[0].meanings[1].definitions.map((definition, index) => (
-                  <ListItem key={index} mt={4}>
-                    {definition.definition}
-                    <Text
-                      mt={4}
-                      sx={{ color: "var(--gray)" }}
-                    >{`"${definition.example}"`}</Text>
-                  </ListItem>
-                ))}
-              </UnorderedList>
-            </Flex>
-            <Divider mt={6} orientation="horizontal" alignSelf={"center"} />
-            <Flex mt={2} gap={2}>
-              <Text>Source</Text>
-              <Text>https://en.wiktionary.org/wiki/keyboard</Text>
-              <Icon as={ExternalLinkIcon} />
-            </Flex>
+              </Flex>
+              <Flex gap={6} mt={6}>
+                <Text fontSize="xl" fontStyle="italic" fontWeight="bold">
+                  {data[0].meanings[1].partOfSpeech}
+                </Text>
+                <Divider orientation="horizontal" alignSelf={"center"} />
+              </Flex>
+              <Flex mt={6} flexDirection={"column"}>
+                <Text sx={{ color: "var(--gray)" }}>Meaning</Text>
+                <UnorderedList>
+                  {data[0].meanings[1].definitions.map((definition, index) => (
+                    <ListItem key={index} mt={4}>
+                      {definition.definition}
+                      <Text
+                        mt={4}
+                        sx={{ color: "var(--gray)" }}
+                      >{`"${definition.example}"`}</Text>
+                    </ListItem>
+                  ))}
+                </UnorderedList>
+              </Flex>
+
+              <Divider mt={6} orientation="horizontal" alignSelf={"center"} />
+              <Flex mt={2} gap={2}>
+                <Text>Source</Text>
+                <Text>https://en.wiktionary.org/wiki/keyboard</Text>
+                <Icon as={ExternalLinkIcon} />
+              </Flex>
+            </Stack>
+          </>
+        )}
+        {searchTerm && error && (
+          <Stack mt={4} textAlign={"center"}>
+            <Text sx={{ fontSize: "50px" }}>&#128532;</Text>
+            <Text fontSize="2xl" as={"b"}>
+              {error.response.data.title}
+            </Text>
+            <Text>
+              {error.response.data.message} {error.response.data.resolution}
+            </Text>
           </Stack>
-        </>
-      )}
-      {searchTerm && error && (
-        <Stack mt={4} textAlign={"center"}>
-          <Text sx={{ fontSize: "50px" }}>&#128532;</Text>
-          <Text fontSize="2xl" as={"b"}>
-            {error.response.data.title}
-          </Text>
-          <Text>
-            {error.response.data.message} {error.response.data.resolution}
-          </Text>
-        </Stack>
-      )}
-      {searchTerm === false && (
-        <Stack mt={4} textAlign={"center"}>
-          <Text color={"red"}>Whoops, can’t be empty…</Text>
-        </Stack>
-      )}
-    </Stack>
+        )}
+        {searchTerm === false && (
+          <Stack mt={4} textAlign={"center"}>
+            <Text color={"red"}>Whoops, can’t be empty…</Text>
+          </Stack>
+        )}
+      </Stack>
+    </>
   );
 };
 
