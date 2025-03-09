@@ -1,5 +1,6 @@
-# Dictionary web app solution
+# Dictionary web app
 
-This is a solution to the [Dictionary web app challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/dictionary-web-app-h5wwnyuKFL).
+![image](https://github.com/user-attachments/assets/c07f185e-5671-4497-9f1f-15e55265b5ff)
+
 
 #### Created with React + VITE + ChakraUI
