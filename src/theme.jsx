@@ -2,7 +2,7 @@ import { extendTheme } from "@chakra-ui/react";
 
 const theme = {
   config: {
-    initialColorMode: "dark",
+    initialColorMode: "system",
     useSystemColorMode: true,
   },
   styles: {
@@ -16,8 +16,7 @@ const theme = {
       },
 
       code: {
-        fontFamily:
-          "source-code-pro, Menlo, Monaco, Consolas, 'Courier New',monospace",
+        fontFamily: "source-code-pro, Menlo, Monaco, Consolas, 'Courier New',monospace",
       },
     },
   },
