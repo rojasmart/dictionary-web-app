@@ -1,39 +1,9 @@
-import PropTypes, { useEffect, useState } from "react";
-import {
-  Stack,
-  Text,
-  Box,
-  Flex,
-  Divider,
-  UnorderedList,
-  ListItem,
-  HStack,
-  Icon,
-} from "@chakra-ui/react";
+import PropTypes from "react";
+import { Stack, Text, Box, Flex, Divider, UnorderedList, ListItem, HStack, Icon } from "@chakra-ui/react";
 import PlayAudio from "./PlayAudio";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { fetchData } from "../api";
 
-const Content = ({ searchTerm }) => {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const getData = async () => {
-      if (searchTerm) {
-        try {
-          const result = await fetchData(searchTerm);
-          setData(result);
-          setError(null);
-        } catch (error) {
-          console.error(error);
-          setError(error);
-        }
-      }
-    };
-    getData();
-  }, [searchTerm]);
-
+const Content = ({ searchTerm, data, error }) => {
   return (
     <>
       {data && data.length > 1 && (
@@ -52,68 +22,86 @@ const Content = ({ searchTerm }) => {
                   {searchTerm}
                 </Text>
                 <Stack>
-                  <Text fontSize="lg" color={"purple"}>
-                    {data[0].phonetic}
-                  </Text>
+                  {data[0].phonetic && (
+                    <Text fontSize="lg" color={"purple"}>
+                      {data[0].phonetic}
+                    </Text>
+                  )}
                 </Stack>
               </Box>
               <PlayAudio data={data} />
             </Flex>
             <Stack mt={6}>
-              <Flex gap={6}>
-                <Text fontSize="xl" fontStyle="italic" fontWeight="bold">
-                  {data[0].meanings[0].partOfSpeech}
-                </Text>
-                <Divider orientation="horizontal" alignSelf={"center"} />
-              </Flex>
-              <Flex mt={6} flexDirection={"column"}>
-                <Text sx={{ color: "var(--gray)" }}>Meaning</Text>
-                <UnorderedList>
-                  {data[0].meanings[0].definitions.map((definition, index) => (
-                    <ListItem key={index} mt={4}>
-                      {definition.definition}
-                    </ListItem>
-                  ))}
-                </UnorderedList>
-                <HStack mt={6}>
-                  <Text sx={{ color: "var(--gray)" }} mr={6}>
-                    Synonyms
-                  </Text>
-                  <HStack gap={4}>
-                    {data[0].meanings[0].synonyms.map((synonym, index) => (
-                      <Text key={index} as={"b"} color={"purple"}>
-                        {synonym}
-                      </Text>
-                    ))}
-                  </HStack>
-                </HStack>
-              </Flex>
-              <Flex gap={6} mt={6}>
-                <Text fontSize="xl" fontStyle="italic" fontWeight="bold">
-                  {data[0].meanings[1].partOfSpeech}
-                </Text>
-                <Divider orientation="horizontal" alignSelf={"center"} />
-              </Flex>
-              <Flex mt={6} flexDirection={"column"}>
-                <Text sx={{ color: "var(--gray)" }}>Meaning</Text>
-                <UnorderedList>
-                  {data[0].meanings[1].definitions.map((definition, index) => (
-                    <ListItem key={index} mt={4}>
-                      {definition.definition}
-                      <Text
-                        mt={4}
-                        sx={{ color: "var(--gray)" }}
-                      >{`"${definition.example}"`}</Text>
-                    </ListItem>
-                  ))}
-                </UnorderedList>
-              </Flex>
+              {data[0].meanings && data[0].meanings[0] && (
+                <>
+                  <Flex gap={6}>
+                    <Text fontSize="xl" fontStyle="italic" fontWeight="bold">
+                      {data[0].meanings[0].partOfSpeech}
+                    </Text>
+                    <Divider orientation="horizontal" alignSelf={"center"} />
+                  </Flex>
+                  <Flex mt={6} flexDirection={"column"}>
+                    <Text sx={{ color: "var(--gray)" }}>Meaning</Text>
+                    <UnorderedList>
+                      {data[0].meanings[0].definitions.map((definition, index) => (
+                        <ListItem key={index} mt={4}>
+                          {definition.definition}
+                          {definition.example && <Text mt={4} sx={{ color: "var(--gray)" }}>{`"${definition.example}"`}</Text>}
+                        </ListItem>
+                      ))}
+                    </UnorderedList>
+                    {data[0].meanings[0].synonyms && data[0].meanings[0].synonyms.length > 0 && (
+                      <HStack mt={6}>
+                        <Text sx={{ color: "var(--gray)" }} mr={6}>
+                          Synonyms
+                        </Text>
+                        <HStack gap={4}>
+                          {data[0].meanings[0].synonyms.map((synonym, index) => (
+                            <Text key={index} as={"b"} color={"purple"}>
+                              {synonym}
+                            </Text>
+                          ))}
+                        </HStack>
+                      </HStack>
+                    )}
+                  </Flex>
+                </>
+              )}
+
+              {/* Only render second meaning if it exists */}
+              {data[0].meanings && data[0].meanings[1] && (
+                <>
+                  <Flex gap={6} mt={6}>
+                    <Text fontSize="xl" fontStyle="italic" fontWeight="bold">
+                      {data[0].meanings[1].partOfSpeech}
+                    </Text>
+                    <Divider orientation="horizontal" alignSelf={"center"} />
+                  </Flex>
+                  <Flex mt={6} flexDirection={"column"}>
+                    <Text sx={{ color: "var(--gray)" }}>Meaning</Text>
+                    <UnorderedList>
+                      {data[0].meanings[1].definitions.map((definition, index) => (
+                        <ListItem key={index} mt={4}>
+                          {definition.definition}
+                          {definition.example && <Text mt={4} sx={{ color: "var(--gray)" }}>{`"${definition.example}"`}</Text>}
+                        </ListItem>
+                      ))}
+                    </UnorderedList>
+                  </Flex>
+                </>
+              )}
 
               <Divider mt={6} orientation="horizontal" alignSelf={"center"} />
               <Flex mt={2} gap={2}>
                 <Text>Source</Text>
-                <Text>https://en.wiktionary.org/wiki/keyboard</Text>
-                <Icon as={ExternalLinkIcon} />
+                {data[0].sourceUrls && data[0].sourceUrls[0] ? (
+                  <>
+                    <Text>{data[0].sourceUrls[0]}</Text>
+                    <Icon as={ExternalLinkIcon} />
+                  </>
+                ) : (
+                  <Text>https://en.wiktionary.org/wiki/{searchTerm}</Text>
+                )}
               </Flex>
             </Stack>
           </>
@@ -122,16 +110,17 @@ const Content = ({ searchTerm }) => {
           <Stack mt={4} textAlign={"center"}>
             <Text sx={{ fontSize: "50px" }}>&#128532;</Text>
             <Text fontSize="2xl" as={"b"}>
-              {error.response.data.title}
+              {error.response?.data?.title || "Word not found"}
             </Text>
             <Text>
-              {error.response.data.message} {error.response.data.resolution}
+              {error.response?.data?.message || "Sorry, we couldn't find definitions for this word."}{" "}
+              {error.response?.data?.resolution || "Please check your spelling or try another word."}
             </Text>
           </Stack>
         )}
         {searchTerm === false && (
           <Stack mt={4} textAlign={"center"}>
-            <Text color={"red"}>Whoops, can’t be empty…</Text>
+            <Text color={"red"}>Whoops, can't be empty…</Text>
           </Stack>
         )}
       </Stack>
