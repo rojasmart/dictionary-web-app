@@ -9,18 +9,26 @@ import { Container } from "@chakra-ui/react";
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
 
   const fetchData = async (term) => {
-    // Aqui você pode implementar a sua lógica de busca
-    // Por exemplo:
-    // const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${term}`);
-    // const data = await response.json();
+    setError(null);
+    try {
+      const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${term}`);
 
-    // Simulando um atraso para demonstrar o spinner
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+      if (!response.ok) {
+        throw new Error("Word not found");
+      }
 
-    // Atualiza o termo de busca depois de obter os dados
-    setSearchTerm(term);
+      const responseData = await response.json();
+      setData(responseData);
+      setSearchTerm(term);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setData(null);
+      setError(error.message || "Failed to fetch word data");
+    }
   };
 
   const handleSearch = async (term) => {
@@ -41,7 +49,7 @@ function App() {
       <Container maxW={"container.md"}>
         <Header />
         <SearchInput onSearch={handleSearch} isLoading={isLoading} />
-        <Content searchTerm={searchTerm} />
+        <Content searchTerm={searchTerm} data={data} error={error} />
       </Container>
     </>
   );
