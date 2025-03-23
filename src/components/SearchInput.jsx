@@ -1,10 +1,10 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { Stack } from "@chakra-ui/react";
-import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
+import { Input, InputGroup, InputRightElement, Spinner } from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons";
 
-const SearchInput = ({ onSearch }) => {
+const SearchInput = ({ onSearch, isLoading }) => {
   const [border, setBorder] = useState(false);
 
   const handleKeyDown = (event) => {
@@ -23,7 +23,7 @@ const SearchInput = ({ onSearch }) => {
     <Stack>
       <InputGroup borderRadius={5} size="sm">
         <InputRightElement pointerEvents="none" h={"100%"} mr={2}>
-          <Search2Icon color="gray.600" key="search-icon" boxSize={4} />
+          {isLoading ? <Spinner size="sm" color="gray.600" /> : <Search2Icon color="gray.600" key="search-icon" boxSize={4} />}
         </InputRightElement>
         <Input
           type="text"
@@ -35,6 +35,7 @@ const SearchInput = ({ onSearch }) => {
           _focusVisible={{ background: "#EDF2F7" }}
           _focusWithin={{ borderColor: "black" }}
           onKeyDown={handleKeyDown}
+          disabled={isLoading}
         />
       </InputGroup>
     </Stack>
@@ -45,4 +46,9 @@ export default SearchInput;
 
 SearchInput.propTypes = {
   onSearch: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
+};
+
+SearchInput.defaultProps = {
+  isLoading: false,
 };
