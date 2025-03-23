@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Image, Tooltip } from "@chakra-ui/react";
 
@@ -6,17 +6,33 @@ const PlayAudio = ({ data }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioAvailable, setAudioAvailable] = useState(true);
   const audioRef = useRef(null);
+  const [audioUrl, setAudioUrl] = useState(null);
 
-  // Find valid audio URL in phonetics array
-  const getAudioUrl = () => {
-    if (!data || !data[0] || !data[0].phonetics) return null;
+  // Reset audio and update audioUrl when data changes
+  useEffect(() => {
+    // Stop any playing audio
+    if (audioRef.current && isPlaying) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setIsPlaying(false);
+    }
 
-    // Find the first phonetic entry with a non-empty audio URL
-    const phonetic = data[0].phonetics.find((p) => p && p.audio && p.audio.trim() !== "");
-    return phonetic ? phonetic.audio : null;
-  };
+    // Reset audio reference
+    audioRef.current = null;
 
-  const audioUrl = getAudioUrl();
+    // Find valid audio URL in phonetics array
+    const getAudioUrl = () => {
+      if (!data || !data[0] || !data[0].phonetics) return null;
+
+      // Find the first phonetic entry with a non-empty audio URL
+      const phonetic = data[0].phonetics.find((p) => p && p.audio && p.audio.trim() !== "");
+      return phonetic ? phonetic.audio : null;
+    };
+
+    const newAudioUrl = getAudioUrl();
+    setAudioUrl(newAudioUrl);
+    setAudioAvailable(!!newAudioUrl);
+  }, [data]);
 
   const handleAudio = () => {
     // Check if audio is available
