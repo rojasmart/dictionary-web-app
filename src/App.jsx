@@ -4,7 +4,7 @@ import Header from "./components/Header";
 import SearchInput from "./components/SearchInput";
 import Content from "./components/Content";
 
-import { Container } from "@chakra-ui/react";
+import { Container, Button } from "@chakra-ui/react";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -44,10 +44,30 @@ function App() {
     }
   };
 
+  const handleRandomWord = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      // Fetch a random word from the Random Word API
+      const response = await fetch("https://random-word-api.herokuapp.com/word?number=1");
+      if (!response.ok) {
+        throw new Error("Failed to fetch a random word");
+      }
+
+      const [randomWord] = await response.json(); // API returns an array with one word
+      await handleSearch(randomWord); // Use the random word to fetch its definition
+    } catch (error) {
+      console.error("Error fetching random word:", error);
+      setError("Failed to fetch a random word");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <Container maxW={"container.md"}>
-        <Header />
+        <Header randomWord={handleRandomWord} isLoading={isLoading} />
         <SearchInput onSearch={handleSearch} isLoading={isLoading} />
         <Content searchTerm={searchTerm} data={data} error={error} />
       </Container>
