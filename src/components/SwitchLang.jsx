@@ -14,7 +14,7 @@ const SwitchLang = () => {
 
   return (
     <Stack>
-      <Select value={font} onChange={handleFontChange}>
+      <Select cursor="pointer" value={font} onChange={handleFontChange}>
         <option value="Inter">Sans Serif</option>
         <option value="Lora">Serif</option>
         <option value="Inconsolata">Mono</option>
