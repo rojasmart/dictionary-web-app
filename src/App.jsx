@@ -4,7 +4,7 @@ import Header from "./components/Header";
 import SearchInput from "./components/SearchInput";
 import Content from "./components/Content";
 
-import { Container, Button } from "@chakra-ui/react";
+import { Container } from "@chakra-ui/react";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
