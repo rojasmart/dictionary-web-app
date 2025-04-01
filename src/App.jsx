@@ -3,14 +3,17 @@ import { useState } from "react";
 import Header from "./components/Header";
 import SearchInput from "./components/SearchInput";
 import Content from "./components/Content";
+import Login from "./components/Login";
 
-import { Container } from "@chakra-ui/react";
+import { Container, Box } from "@chakra-ui/react";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
+  const [favoriteWords, setFavoriteWords] = useState([]);
 
   const fetchData = async (term) => {
     setError(null);
@@ -64,13 +67,57 @@ function App() {
     }
   };
 
+  const handleLogin = (username, password) => {
+    if (username && password) {
+      // Store user data in localStorage
+      localStorage.setItem("user", username);
+
+      // Load favorite words from localStorage
+      const storedFavorites = localStorage.getItem(`favorites_${username}`);
+
+      setUser(username);
+      if (storedFavorites) {
+        setFavoriteWords(JSON.parse(storedFavorites));
+      }
+    }
+  };
+
+  const handleLogout = () => {
+    // Save favorites to localStorage before logout
+    if (user) {
+      localStorage.setItem(`favorites_${user}`, JSON.stringify(favoriteWords));
+    }
+    setUser(null);
+    setFavoriteWords([]);
+  };
+
+  const addToFavorites = (word) => {
+    if (user && !favoriteWords.includes(word)) {
+      const newFavorites = [...favoriteWords, word];
+      setFavoriteWords(newFavorites);
+      localStorage.setItem(`favorites_${user}`, JSON.stringify(newFavorites));
+    }
+  };
+
+  const handleSelectWord = async (word) => {
+    await handleSearch(word);
+  };
+
   return (
     <>
-      <Container maxW={"container.md"}>
-        <Header randomWord={handleRandomWord} isLoading={isLoading} />
-        <SearchInput onSearch={handleSearch} isLoading={isLoading} />
-        <Content searchTerm={searchTerm} data={data} error={error} />
-      </Container>
+      <Box position="relative">
+        <Container maxW={"container.lg"}>
+          <Header
+            randomWord={handleRandomWord}
+            isLoading={isLoading}
+            loginComponent={
+              <Login user={user} onLogin={handleLogin} onLogout={handleLogout} favoriteWords={favoriteWords} onSelectWord={handleSelectWord} />
+            }
+          />
+          <SearchInput onSearch={handleSearch} isLoading={isLoading} />
+          <Content searchTerm={searchTerm} data={data} error={error} user={user} onAddToFavorites={addToFavorites} favoriteWords={favoriteWords} />
+        </Container>
+      </Box>
     </>
   );
 }
