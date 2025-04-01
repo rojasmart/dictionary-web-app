@@ -13,6 +13,7 @@ function App() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
+  const [favoriteWords, setFavoriteWords] = useState([]);
 
   const fetchData = async (term) => {
     setError(null);
@@ -67,21 +68,54 @@ function App() {
   };
 
   const handleLogin = (username, password) => {
-    console.log("User logged in:", { username, password });
-    setUser(username); // Set the logged-in user
+    if (username && password) {
+      // Store user data in localStorage
+      localStorage.setItem("user", username);
+
+      // Load favorite words from localStorage
+      const storedFavorites = localStorage.getItem(`favorites_${username}`);
+
+      setUser(username);
+      if (storedFavorites) {
+        setFavoriteWords(JSON.parse(storedFavorites));
+      }
+    }
   };
 
   const handleLogout = () => {
-    console.log("User logged out");
-    setUser(null); // Clear the logged-in user
+    // Save favorites to localStorage before logout
+    if (user) {
+      localStorage.setItem(`favorites_${user}`, JSON.stringify(favoriteWords));
+    }
+    setUser(null);
+    setFavoriteWords([]);
   };
+
+  const addToFavorites = (word) => {
+    if (user && !favoriteWords.includes(word)) {
+      const newFavorites = [...favoriteWords, word];
+      setFavoriteWords(newFavorites);
+      localStorage.setItem(`favorites_${user}`, JSON.stringify(newFavorites));
+    }
+  };
+
+  const handleSelectWord = async (word) => {
+    await handleSearch(word);
+  };
+
   return (
     <>
       <Box position="relative">
         <Container maxW={"container.lg"}>
-          <Header randomWord={handleRandomWord} isLoading={isLoading} onLogin={handleLogin} onLogout={handleLogout} user={user} />
+          <Header
+            randomWord={handleRandomWord}
+            isLoading={isLoading}
+            loginComponent={
+              <Login user={user} onLogin={handleLogin} onLogout={handleLogout} favoriteWords={favoriteWords} onSelectWord={handleSelectWord} />
+            }
+          />
           <SearchInput onSearch={handleSearch} isLoading={isLoading} />
-          <Content searchTerm={searchTerm} data={data} error={error} />
+          <Content searchTerm={searchTerm} data={data} error={error} user={user} onAddToFavorites={addToFavorites} favoriteWords={favoriteWords} />
         </Container>
       </Box>
     </>

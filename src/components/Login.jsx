@@ -15,11 +15,15 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Text,
 } from "@chakra-ui/react";
 
-const Login = ({ user, onLogin, onLogout }) => {
+import FavoriteWords from "./FavoriteWords";
+
+const Login = ({ user, onLogin, onLogout, favoriteWords = [], onSelectWord }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
+  const [showFavorites, setShowFavorites] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -32,27 +36,56 @@ const Login = ({ user, onLogin, onLogout }) => {
   };
 
   const handleSubmit = () => {
-    if (isRegistering) {
-      console.log("Registering new user:", { username, password });
-      // Add logic to register the user
-    } else {
-      console.log("Logging in user:", { username, password });
-      onLogin(username, password); // Pass login details to parent
+    if (!username || !password) {
+      console.error("Username and password are required");
+      return;
     }
+
+    try {
+      if (isRegistering) {
+        // Store new user in localStorage
+        const users = JSON.parse(localStorage.getItem("users") || "{}");
+        users[username] = { password };
+        localStorage.setItem("users", JSON.stringify(users));
+        console.log("User registered successfully");
+      }
+
+      // Verify login
+      const users = JSON.parse(localStorage.getItem("users") || "{}");
+      if (!users[username] || users[username].password !== password) {
+        console.error("Invalid username or password");
+        return;
+      }
+
+      // Call onLogin function passed from parent
+      onLogin(username, password);
+    } catch (error) {
+      console.error("Login error:", error);
+    }
+
     handleClose();
   };
 
   if (user) {
-    // Render avatar when user is logged in
     return (
-      <Menu>
-        <MenuButton>
-          <Avatar name={user} size="sm" />
-        </MenuButton>
-        <MenuList>
-          <MenuItem onClick={onLogout}>Logout</MenuItem>
-        </MenuList>
-      </Menu>
+      <>
+        <Menu>
+          <MenuButton>
+            <HStack spacing={2}>
+              <Avatar name={user} size="sm" />
+              <Text>{user}</Text>
+            </HStack>
+          </MenuButton>
+          <MenuList>
+            <MenuItem onClick={() => setShowFavorites(true)}>Favorite Words ({favoriteWords.length})</MenuItem>
+            <MenuItem onClick={onLogout}>Logout</MenuItem>
+          </MenuList>
+        </Menu>
+
+        {showFavorites && (
+          <FavoriteWords isOpen={showFavorites} onClose={() => setShowFavorites(false)} favoriteWords={favoriteWords} onSelectWord={onSelectWord} />
+        )}
+      </>
     );
   }
 
@@ -70,8 +103,8 @@ const Login = ({ user, onLogin, onLogout }) => {
           <ModalHeader>{isRegistering ? "Register" : "Login"}</ModalHeader>
           <ModalBody>
             <VStack spacing={4}>
-              <Input placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-              <Input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <Input placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
+              <Input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
             </VStack>
           </ModalBody>
           <ModalFooter>

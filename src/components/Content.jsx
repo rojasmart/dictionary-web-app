@@ -1,9 +1,11 @@
 import PropTypes from "react";
-import { Stack, Text, Box, Flex, Divider, UnorderedList, ListItem, HStack, Icon } from "@chakra-ui/react";
+import { Stack, Text, Box, Flex, Divider, UnorderedList, ListItem, HStack, Icon, Tooltip, Button } from "@chakra-ui/react";
 import PlayAudio from "./PlayAudio";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { ExternalLinkIcon, StarIcon } from "@chakra-ui/icons";
 
-const Content = ({ searchTerm, data, error }) => {
+const Content = ({ searchTerm, data, error, user, onAddToFavorites, favoriteWords = [] }) => {
+  const isWordFavorited = favoriteWords.includes(searchTerm);
+
   return (
     <>
       {data && data.length > 1 && (
@@ -18,9 +20,23 @@ const Content = ({ searchTerm, data, error }) => {
           <>
             <Flex justifyContent={"space-between"} flex={"auto"}>
               <Box>
-                <Text fontSize="5xl" as={"b"}>
-                  {searchTerm}
-                </Text>
+                <HStack spacing={4}>
+                  <Text fontSize="5xl" as={"b"}>
+                    {searchTerm}
+                  </Text>
+                  {user && (
+                    <Tooltip label={isWordFavorited ? "Remove from favorites" : "Add to favorites"}>
+                      <Button
+                        onClick={() => onAddToFavorites(searchTerm)}
+                        size="sm"
+                        colorScheme={isWordFavorited ? "pink" : "gray"}
+                        leftIcon={<StarIcon />}
+                      >
+                        {isWordFavorited ? "Favorited" : "Favorite"}
+                      </Button>
+                    </Tooltip>
+                  )}
+                </HStack>
                 <Stack>
                   {data[0].phonetic && (
                     <Text fontSize="lg" color={"purple"}>
