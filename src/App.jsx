@@ -3,14 +3,16 @@ import { useState } from "react";
 import Header from "./components/Header";
 import SearchInput from "./components/SearchInput";
 import Content from "./components/Content";
+import Login from "./components/Login";
 
-import { Container } from "@chakra-ui/react";
+import { Container, Box } from "@chakra-ui/react";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
 
   const fetchData = async (term) => {
     setError(null);
@@ -64,13 +66,24 @@ function App() {
     }
   };
 
+  const handleLogin = (username, password) => {
+    // Implement your login logic here
+    console.log("User logged in:", { username, password });
+    setUser(username); // Set the logged-in user
+  };
+
   return (
     <>
-      <Container maxW={"container.md"}>
-        <Header randomWord={handleRandomWord} isLoading={isLoading} />
-        <SearchInput onSearch={handleSearch} isLoading={isLoading} />
-        <Content searchTerm={searchTerm} data={data} error={error} />
-      </Container>
+      <Box position="relative">
+        <Box position="absolute" top="10px" right="10px">
+          <Login onLogin={handleLogin} />
+        </Box>
+        <Container maxW={"container.md"}>
+          <Header randomWord={handleRandomWord} isLoading={isLoading} />
+          <SearchInput onSearch={handleSearch} isLoading={isLoading} />
+          <Content searchTerm={searchTerm} data={data} error={error} />
+        </Container>
+      </Box>
     </>
   );
 }
