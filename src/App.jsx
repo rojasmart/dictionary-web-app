@@ -67,19 +67,19 @@ function App() {
   };
 
   const handleLogin = (username, password) => {
-    // Implement your login logic here
     console.log("User logged in:", { username, password });
     setUser(username); // Set the logged-in user
   };
 
+  const handleLogout = () => {
+    console.log("User logged out");
+    setUser(null); // Clear the logged-in user
+  };
   return (
     <>
       <Box position="relative">
-        <Box position="absolute" top="10px" right="10px">
-          <Login onLogin={handleLogin} />
-        </Box>
-        <Container maxW={"container.md"}>
-          <Header randomWord={handleRandomWord} isLoading={isLoading} />
+        <Container maxW={"container.lg"}>
+          <Header randomWord={handleRandomWord} isLoading={isLoading} onLogin={handleLogin} onLogout={handleLogout} user={user} />
           <SearchInput onSearch={handleSearch} isLoading={isLoading} />
           <Content searchTerm={searchTerm} data={data} error={error} />
         </Container>

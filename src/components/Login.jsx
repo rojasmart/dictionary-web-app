@@ -1,7 +1,23 @@
 import { useState } from "react";
-import { Button, HStack, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  HStack,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Input,
+  VStack,
+  Avatar,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+} from "@chakra-ui/react";
 
-const Login = ({ onLogin }) => {
+const Login = ({ user, onLogin, onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
   const [username, setUsername] = useState("");
@@ -25,6 +41,20 @@ const Login = ({ onLogin }) => {
     }
     handleClose();
   };
+
+  if (user) {
+    // Render avatar when user is logged in
+    return (
+      <Menu>
+        <MenuButton>
+          <Avatar name={user} size="sm" />
+        </MenuButton>
+        <MenuList>
+          <MenuItem onClick={onLogout}>Logout</MenuItem>
+        </MenuList>
+      </Menu>
+    );
+  }
 
   return (
     <>
