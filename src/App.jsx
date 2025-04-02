@@ -14,6 +14,7 @@ function App() {
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
   const [favoriteWords, setFavoriteWords] = useState([]);
+  const [searchHistory, setSearchHistory] = useState({});
 
   const fetchData = async (term) => {
     setError(null);
@@ -39,6 +40,16 @@ function App() {
       setIsLoading(true);
       try {
         await fetchData(term);
+        if (user) {
+          const userHistory = searchHistory[user] || [];
+          const updatedHistory = [term, ...userHistory.filter((w) => w !== term)].slice(0, 10);
+          setSearchHistory((prev) => ({
+            ...prev,
+            [user]: updatedHistory,
+          }));
+          // Store in localStorage
+          localStorage.setItem(`history_${user}`, JSON.stringify(updatedHistory));
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -74,10 +85,18 @@ function App() {
 
       // Load favorite words from localStorage
       const storedFavorites = localStorage.getItem(`favorites_${username}`);
+      // Load search history from localStorage
+      const storedHistory = localStorage.getItem(`history_${username}`);
 
       setUser(username);
       if (storedFavorites) {
         setFavoriteWords(JSON.parse(storedFavorites));
+      }
+      if (storedHistory) {
+        setSearchHistory((prev) => ({
+          ...prev,
+          [username]: JSON.parse(storedHistory),
+        }));
       }
     }
   };
@@ -86,6 +105,7 @@ function App() {
     // Save favorites to localStorage before logout
     if (user) {
       localStorage.setItem(`favorites_${user}`, JSON.stringify(favoriteWords));
+      localStorage.setItem(`history_${user}`, JSON.stringify(searchHistory[user] || []));
     }
     setUser(null);
     setFavoriteWords([]);
@@ -111,7 +131,14 @@ function App() {
             randomWord={handleRandomWord}
             isLoading={isLoading}
             loginComponent={
-              <Login user={user} onLogin={handleLogin} onLogout={handleLogout} favoriteWords={favoriteWords} onSelectWord={handleSelectWord} />
+              <Login
+                user={user}
+                onLogin={handleLogin}
+                onLogout={handleLogout}
+                favoriteWords={favoriteWords}
+                searchHistory={searchHistory[user] || []}
+                onSelectWord={handleSelectWord}
+              />
             }
           />
           <SearchInput onSearch={handleSearch} isLoading={isLoading} />

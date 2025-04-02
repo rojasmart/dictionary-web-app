@@ -10,17 +10,20 @@ import {
   ModalFooter,
   Input,
   VStack,
-  Avatar,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
-  Text,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
 } from "@chakra-ui/react";
 
 import FavoriteWords from "./FavoriteWords";
 
-const Login = ({ user, onLogin, onLogout, favoriteWords = [], onSelectWord }) => {
+const Login = ({ user, onLogin, onLogout, favoriteWords = [], searchHistory, onSelectWord }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
@@ -70,14 +73,30 @@ const Login = ({ user, onLogin, onLogout, favoriteWords = [], onSelectWord }) =>
     return (
       <>
         <Menu>
-          <MenuButton>
-            <HStack spacing={2}>
-              <Avatar name={user} size="sm" />
-              <Text>{user}</Text>
-            </HStack>
-          </MenuButton>
+          <MenuButton as={Button}>{user}</MenuButton>
           <MenuList>
-            <MenuItem onClick={() => setShowFavorites(true)}>Favorite Words ({favoriteWords.length})</MenuItem>
+            <Tabs>
+              <TabList>
+                <Tab>Favorites</Tab>
+                <Tab>History</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  {favoriteWords.map((word, index) => (
+                    <MenuItem key={`fav-${index}`} onClick={() => onSelectWord(word)}>
+                      {word}
+                    </MenuItem>
+                  ))}
+                </TabPanel>
+                <TabPanel>
+                  {searchHistory.map((word, index) => (
+                    <MenuItem key={`hist-${index}`} onClick={() => onSelectWord(word)}>
+                      {word}
+                    </MenuItem>
+                  ))}
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
             <MenuItem onClick={onLogout}>Logout</MenuItem>
           </MenuList>
         </Menu>
@@ -91,7 +110,7 @@ const Login = ({ user, onLogin, onLogout, favoriteWords = [], onSelectWord }) =>
 
   return (
     <>
-      <HStack justifyContent="flex-end" w="100%">
+      <HStack>
         <Button onClick={handleOpen} colorScheme="blue">
           Login
         </Button>
