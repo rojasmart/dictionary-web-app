@@ -17,6 +17,9 @@ const Header = ({ randomWord, isLoading, loginComponent }) => {
           <Divider orientation="vertical" />
         </Center>
         <Toggle />
+        <Center height="50px">
+          <Divider orientation="vertical" />
+        </Center>
         {loginComponent}
       </HStack>
     </HStack>
