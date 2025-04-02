@@ -1,6 +1,7 @@
 # Dictionary web app
 
-![image](https://github.com/user-attachments/assets/c07f185e-5671-4497-9f1f-15e55265b5ff)
+![image](https://github.com/user-attachments/assets/baf578b4-c0e6-497d-b0cb-7ad06ce4d3d5)
+
 
 
 #### Created with React + VITE + ChakraUI
