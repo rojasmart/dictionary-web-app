@@ -3,7 +3,7 @@ import { Stack, Text, Box, Flex, Divider, UnorderedList, ListItem, HStack, Icon,
 import PlayAudio from "./PlayAudio";
 import { ExternalLinkIcon, StarIcon } from "@chakra-ui/icons";
 
-const Content = ({ searchTerm, data, error, user, onAddToFavorites, favoriteWords = [] }) => {
+const Content = ({ searchTerm, data, error, user, onAddToFavorites, favoriteWords = [], translation, selectedLanguage }) => {
   const isWordFavorited = favoriteWords.includes(searchTerm);
 
   return (
@@ -20,6 +20,14 @@ const Content = ({ searchTerm, data, error, user, onAddToFavorites, favoriteWord
           <>
             <Flex justifyContent={"space-between"} flex={"auto"}>
               <Box>
+                {translation && (
+                  <Box mt={4} p={4} borderWidth={1} borderRadius="md">
+                    <Text fontSize="lg" fontWeight="bold">
+                      Translation ({selectedLanguage.toUpperCase()}):
+                    </Text>
+                    <Text mt={2}>{translation}</Text>
+                  </Box>
+                )}
                 <HStack spacing={4}>
                   <Text fontSize="5xl" as={"b"}>
                     {searchTerm}
