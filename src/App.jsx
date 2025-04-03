@@ -16,6 +16,9 @@ function App() {
   const [favoriteWords, setFavoriteWords] = useState([]);
   const [searchHistory, setSearchHistory] = useState({});
 
+  const [translations, setTranslations] = useState({});
+  const [selectedLanguage, setSelectedLanguage] = useState("es"); // default to Spanish
+
   const fetchData = async (term) => {
     setError(null);
     try {
@@ -40,6 +43,8 @@ function App() {
       setIsLoading(true);
       try {
         await fetchData(term);
+        await fetchTranslation(term, selectedLanguage);
+
         if (user) {
           const userHistory = searchHistory[user] || [];
           const updatedHistory = [term, ...userHistory.filter((w) => w !== term)].slice(0, 10);
@@ -123,6 +128,36 @@ function App() {
     await handleSearch(word);
   };
 
+  const fetchTranslation = async (word, targetLang) => {
+    try {
+      const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(word)}&langpair=en|${targetLang}`);
+
+      if (!response.ok) {
+        throw new Error("Translation failed");
+      }
+
+      const data = await response.json();
+      if (data.responseStatus === 200) {
+        setTranslations((prev) => ({
+          ...prev,
+          [targetLang]: data.responseData.translatedText,
+        }));
+      } else {
+        throw new Error(data.responseDetails);
+      }
+    } catch (error) {
+      console.error("Translation error:", error);
+      setError(error.message || "Failed to translate word");
+    }
+  };
+
+  const handleLanguageChange = async (language) => {
+    setSelectedLanguage(language);
+    if (searchTerm) {
+      await fetchTranslation(searchTerm, language);
+    }
+  };
+
   return (
     <>
       <Box position="relative">
@@ -140,9 +175,20 @@ function App() {
                 onSelectWord={handleSelectWord}
               />
             }
+            selectedLanguage={selectedLanguage}
+            onLanguageChange={handleLanguageChange}
           />
           <SearchInput onSearch={handleSearch} isLoading={isLoading} />
-          <Content searchTerm={searchTerm} data={data} error={error} user={user} onAddToFavorites={addToFavorites} favoriteWords={favoriteWords} />
+          <Content
+            searchTerm={searchTerm}
+            data={data}
+            error={error}
+            user={user}
+            onAddToFavorites={addToFavorites}
+            favoriteWords={favoriteWords}
+            translation={translations[selectedLanguage]}
+            selectedLanguage={selectedLanguage}
+          />
         </Container>
       </Box>
     </>
