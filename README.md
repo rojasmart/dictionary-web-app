@@ -2,10 +2,12 @@
 
 A modern, feature-rich dictionary web application built with React and Chakra UI that allows users to look up word definitions, translations, listen to pronunciations, and save favorite words.
 
-![Dictionary Web App Screenshot]![image](https://github.com/user-attachments/assets/39590b09-0ffe-4a39-b892-c050c0582525)
-)
-![image](https://github.com/user-attachments/assets/1ca098ca-c7fb-4a50-afa9-23cf38544ca3)
-![image](https://github.com/user-attachments/assets/6781120e-02a3-44b2-80f1-79a16eb09dff)
+![Main App Screenshot](https://github.com/user-attachments/assets/39590b09-0ffe-4a39-b892-c050c0582525)
+
+## App Details
+| Feature View | Settings View |
+|:---:|:---:|
+| ![Detail view 1](https://github.com/user-attachments/assets/1ca098ca-c7fb-4a50-afa9-23cf38544ca3) | ![Detail view 2](https://github.com/user-attachments/assets/6781120e-02a3-44b2-80f1-79a16eb09dff) |
 
 
 
