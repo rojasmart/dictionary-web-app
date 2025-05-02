@@ -5,10 +5,12 @@ A modern, feature-rich dictionary web application built with React and Chakra UI
 ![Main App Screenshot](https://github.com/user-attachments/assets/39590b09-0ffe-4a39-b892-c050c0582525)
 
 ## App Details
-| Favorite and Translation View | Settings View | No Audio
-|:---:|:---:|:---:|
+| Favorite View | Translation View |
+|:---:|:---:|
 | ![Detail view 1](https://github.com/user-attachments/assets/1ca098ca-c7fb-4a50-afa9-23cf38544ca3) | ![Detail view 2](https://github.com/user-attachments/assets/6781120e-02a3-44b2-80f1-79a16eb09dff) |
- | (![Detail View 3](https://github.com/user-attachments/assets/0c8991bb-feb0-4893-9956-da76b5b9c293))
+| **Settings View** | **No Audio** |
+| ![Detail View 3](https://github.com/user-attachments/assets/0c8991bb-feb0-4893-9956-da76b5b9c293) | ![Detail View 4](![image](https://github.com/user-attachments/assets/ebd9fbdb-d6a0-4861-be4d-e89d06f57214)
+) |
 
 
 
