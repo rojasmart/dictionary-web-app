@@ -1,8 +1,28 @@
-import PropTypes from "react";
-import { Stack, Text, Box, Flex, Divider, UnorderedList, ListItem, HStack, Icon, Tooltip, Button } from "@chakra-ui/react";
+import PropTypes from "prop-types";
+import {
+  Stack,
+  Text,
+  Box,
+  Flex,
+  Divider,
+  UnorderedList,
+  ListItem,
+  HStack,
+  Icon,
+  Tooltip,
+  Button,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  Image,
+} from "@chakra-ui/react";
 import PlayAudio from "./PlayAudio";
+import DetailTile from "./DetailTile";
 import { ExternalLinkIcon, StarIcon } from "@chakra-ui/icons";
-
 const Content = ({ searchTerm, data, error, user, onAddToFavorites, favoriteWords = [], translation, selectedLanguage }) => {
   const isWordFavorited = favoriteWords.includes(searchTerm);
 
